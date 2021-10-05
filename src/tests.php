@@ -27,6 +27,7 @@ $tests = array(
     'https://git.php.net/?p=php-src.git;a=shortlog;h=refs/heads/master;hb=refs/heads/master' => 'https://github.com/php/php-src/commits/master',
     //
     'http://git.php.net/?p=php-src.git;a=log' => 'https://github.com/php/php-src/',
+    'http://git.php.net/?p=php-src.git;a=commitdiff;h=c730aa26bd52829a49f2ad284b181b7e82a68d7d' => 'https://github.com/php/php-src/commit/c730aa26bd52829a49f2ad284b181b7e82a68d7d',
 );
 $failCounter = 0;
 foreach ($tests as $git_php_net_url => $expected_github_url) {

@@ -28,9 +28,14 @@ function get_github_redirect(string $original_uri): ?string
         }
     }
     // </parse_p>
-    if (count($p) === 3 && isset($p[0], $p['a'], $p['h']) && $p[0] === 'php-src.git' && $p['a'] === 'commit' && preg_match('/^[a-f0-9]{7,40}$/', $p['h'])) {
+    if (count($p) === 3 && isset($p[0], $p['a'], $p['h']) && $p[0] === 'php-src.git' && in_array($p['a'], [
+        'commit',
+        'commitdiff'
+    ], true) && preg_match('/^[a-f0-9]{7,40}$/', $p['h'])) {
         // from: http://git.php.net/?p=php-src.git;a=commit;h=3c939e3f69955d087e0bb671868f7267dfb2a502
         // to: https://github.com/php/php-src/commit/3c939e3f69955d087e0bb671868f7267dfb2a502
+        // from: http://git.php.net/?p=php-src.git;a=commitdiff;h=c730aa26bd52829a49f2ad284b181b7e82a68d7d
+        // to: https://github.com/php/php-src/commit/c730aa26bd52829a49f2ad284b181b7e82a68d7d
         $ret = "{$base}commit/{$p['h']}";
         return $ret;
     }
@@ -56,6 +61,7 @@ function get_github_redirect(string $original_uri): ?string
         $ret = "{$base}{$ret}/" . substr($p['h'], strlen('refs/heads/'));
         return $ret;
     }
+
     if (0) {
         var_dump($p, $uri);
         die();
