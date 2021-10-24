@@ -3,10 +3,14 @@ declare(strict_types = 1);
 
 function get_github_redirect(string $original_uri): ?string
 {
-    $uri = parse_url($original_uri, PHP_URL_QUERY);
-    $len = strlen($uri);
+    $uridata = parse_url($original_uri);
+    if(($uridata["path"] ?? "") !== '/'){
+        // don't know where to redirect this. give him the "please report bug" page..
+        return null;
+    }
+    $uri = $uridata['query'] ?? "";
     $base = 'https://github.com/php/php-src/';
-    if ($len < 1 || $uri === 'p=php-src.git;a=log') {
+    if (strlen($uri) < 1 || $uri === 'p=php-src.git;a=log') {
         return $base;
     }
     $data = [];
@@ -15,6 +19,7 @@ function get_github_redirect(string $original_uri): ?string
         return $base;
     }
     // <parse_p>
+
     // i have no idea how i is supposed to be parsed,
     // parsing it by ; and = is just my best guess.
     $tmp = explode(';', $data['p'] ?? "");
